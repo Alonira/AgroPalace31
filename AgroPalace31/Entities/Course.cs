@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace AgroPalace31.Entities
+namespace CourseLibrary.API.Entities
 {
     public class Course
     {
-        [Key]
+        [Key]       
         public Guid Id { get; set; }
 
         [Required]
@@ -21,6 +18,7 @@ namespace AgroPalace31.Entities
 
         [ForeignKey("AuthorId")]
         public Author Author { get; set; }
+
         public Guid AuthorId { get; set; }
     }
 }
