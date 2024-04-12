@@ -1,7 +1,10 @@
+using AgroPalace31.DbContexts;
+using AgroPalace31.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -26,6 +29,12 @@ namespace AgroPalace31
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddScoped<ICourseLibraryRepository , CourseLibraryRepository>();
+            services.AddDbContext<CourseLibraryContext>(options =>
+            {
+                options.UseSqlServer(
+                    "server = (localdb)\\ProjectsV13;Initial Catalog=CourseLibraryDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
