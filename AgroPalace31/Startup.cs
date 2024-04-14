@@ -1,3 +1,4 @@
+using AgroPalace31.DbContexts;
 using CourseLibrary.API.DbContexts;
 using CourseLibrary.API.Services;
 using Microsoft.AspNetCore.Builder;
@@ -30,7 +31,11 @@ namespace CourseLibrary.API
             {
                 options.UseSqlServer(
                     @"Server=(localdb)\mssqllocaldb;Database=CourseLibraryDB;Trusted_Connection=True;");
-            }); 
+            });
+            services.AddDbContext<BookContext>(options =>
+            {
+              
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
