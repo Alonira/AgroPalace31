@@ -17,6 +17,7 @@ namespace AgroPalace31.Controllers
             _courseLibraryRepository = courseLibraryRepository ??
                 throw new ArgumentNullException(nameof(courseLibraryRepository));
         }
+        [HttpGet("api/authors")]
         public IActionResult GetAuthors()
         {
             var authorsFromRepo = _courseLibraryRepository.GetAuthors();

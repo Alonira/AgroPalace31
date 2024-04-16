@@ -19,28 +19,30 @@ namespace AgroPalace31.Services
         {
             _context.Books.Add(book);
             _context.SaveChanges();
-            throw new NotImplementedException();
+           
         }
 
         public void DeleteBook(Book Book)
         {
             _context.Books.Remove(Book);
-            throw new NotImplementedException();
+            
         }
 
         public Book GetBook(int id)
         {
+            _context.Books.Find(id);
+            
             throw new NotImplementedException();
         }
 
         public IEnumerable<Book> GetBooks()
         {
-            throw new NotImplementedException();
+            return _context.Books.ToList<Book>();
         }
 
         public void UpdateBook(Book book)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 }

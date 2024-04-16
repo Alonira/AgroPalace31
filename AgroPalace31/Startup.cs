@@ -32,10 +32,9 @@ namespace CourseLibrary.API
                 options.UseSqlServer(
                     @"Server=(localdb)\mssqllocaldb;Database=CourseLibraryDB;Trusted_Connection=True;");
             });
-            services.AddDbContext<BookContext>(options =>
-            {
-              
-            });
+            services.AddDbContext<BookContext>(options => options.UseSqlServer
+            (Configuration.GetConnectionString(
+                "DefaultConnection")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
