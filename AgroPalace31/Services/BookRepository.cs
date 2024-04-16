@@ -30,9 +30,7 @@ namespace AgroPalace31.Services
 
         public Book GetBook(int id)
         {
-            _context.Books.Find(id);
-            
-            throw new NotImplementedException();
+           return _context.Books.Find(id);
         }
 
         public IEnumerable<Book> GetBooks()
@@ -42,7 +40,7 @@ namespace AgroPalace31.Services
 
         public void UpdateBook(Book book)
         {
-            //throw new NotImplementedException();
+            
         }
     }
 }

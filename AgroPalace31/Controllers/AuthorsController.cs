@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace AgroPalace31.Controllers
 {
     [ApiController]
+    [Route("api/authors")]
     public class AuthorsController :ControllerBase
     {
         private readonly ICourseLibraryRepository _courseLibraryRepository;
