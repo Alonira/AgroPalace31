@@ -25,7 +25,8 @@ namespace AgroPalace31.Controllers
 
             _mapper = mapper ??
                 throw new ArgumentNullException(nameof(mapper));
-        }
+        } 
+        //action return type
         /* [HttpGet()]
         public IActionResult GetAuthors()
         {
@@ -43,26 +44,17 @@ namespace AgroPalace31.Controllers
             }
             return Ok(authors);
         } */
+
+        //actionresult-T & object Mapping
         [HttpGet()]
         public ActionResult<IEnumerable<AuthorDto>> GetAuthors()
         {
-            var authorsFromRepo = _courseLibraryRepository.GetAuthors();
-            var authors = new List<AuthorDto>();
-            foreach (var author in authorsFromRepo)
-            {
-                authors.Add(new AuthorDto()
-                {
-                    Id = author.Id,
-                    Name = $"(author.FirstName)(author.LastName)",
-                    MainCategory = author.MainCategory,
-                    Age = author.DateOfBirth.GetCurrentAge()
-                });
-            }
-            return Ok(authors);
+            var authorsFromRepo = _courseLibraryRepository.GetAuthors(); 
+            return Ok(_mapper.Map<IEnumerable<AuthorDto>>(authorsFromRepo));
         }
 
-
-        [HttpGet("authorId ")]
+        //using actionresult
+        /* [HttpGet("authorId ")]
         public IActionResult GetAuthor(Guid authorId)
         {
             var authorsFromRepo = _courseLibraryRepository.GetAuthor(authorId);
@@ -71,6 +63,18 @@ namespace AgroPalace31.Controllers
                 return NotFound();
             }
             return Ok(authorsFromRepo);
+        } */
+
+        //using mapping 
+        public ActionResult<IEnumerable<AuthorDto>> GetAuthor(Guid authorId)
+        {
+            var authorFromRepo = _courseLibraryRepository.GetAuthor(authorId);
+            if (authorFromRepo == null)
+            {
+                return NotFound();
+            }
+            return Ok(_mapper.Map<IEnumerable<AuthorDto>>(authorFromRepo));
         }
     }
 }
+ 

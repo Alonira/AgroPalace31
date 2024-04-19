@@ -17,7 +17,7 @@ namespace AgroPalace31.Profiles
                 opt => opt.MapFrom(src => $"{ src.FirstName}{ src.LastName}"))
                 .ForMember(
                 dest => dest.Age,
-                opt => opt.MapFrom(src => src.DateOfBirth.GetCurrentAge()));
+                opt => opt.MapFrom(src => src.DateOfBirth.GetCurrentAge())); 
         }
     }
 }
