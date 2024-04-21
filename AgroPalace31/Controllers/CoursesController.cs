@@ -48,7 +48,7 @@ namespace AgroPalace31.Controllers
             {
                 return NotFound();
             }
-            return Ok(_mapper.Map<CourseDto>(courseForAuthorFromRepo));
+            return Ok(_mapper.Map<CourseDto>(courseForAuthorFromRepo)); 
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AgroPalace31.Helper;
 using AgroPalace31.Model;
+using AgroPalace31.ResourceParameters;
 using AutoMapper;
 using CourseLibrary.API.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -47,10 +48,36 @@ namespace AgroPalace31.Controllers
 
         //actionresult-T & object Mapping
         [HttpGet()]
+        [HttpHead]
         public ActionResult<IEnumerable<AuthorDto>> GetAuthors()
         {
             var authorsFromRepo = _courseLibraryRepository.GetAuthors(); 
             return Ok(_mapper.Map<IEnumerable<AuthorDto>>(authorsFromRepo));
+        }
+
+
+
+       /* //filtering resource collections & searcing through resource collection
+        [HttpGet()]
+        [HttpHead]
+        public ActionResult<IEnumerable<AuthorDto>> GetAuthors(string mainCategory ,string searchQuery)
+        {
+            var authorsFromRepo = _courseLibraryRepository.GetAuthors( mainCategory,searchQuery);
+            return Ok(_mapper.Map<IEnumerable<AuthorDto>>(authorsFromRepo));
+        }
+
+        // */
+
+        //Grouping action parameters Together into One Object
+        [HttpGet()]
+        [HttpHead]
+        public ActionResult<IEnumerable<AuthorDto>> GetAuthors(
+           [FromQuery] AuthorsResourceParameters authorsResourceParameters)
+        {
+            var authorsFromRepo = _courseLibraryRepository.GetAuthors(
+                authorsResourceParameters);
+            return Ok(_mapper.Map<IEnumerable<AuthorDto>>(authorsFromRepo));
+
         }
 
         //using actionresult
