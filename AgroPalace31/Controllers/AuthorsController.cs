@@ -72,7 +72,7 @@ namespace AgroPalace31.Controllers
         [HttpGet()]
         [HttpHead]
         public ActionResult<IEnumerable<AuthorDto>> GetAuthors(
-           [FromQuery] AuthorsResourceParameters authorsResourceParameters)
+           [FromQuery]  AuthorsResourceParameters authorsResourceParameters)
         {
             var authorsFromRepo = _courseLibraryRepository.GetAuthors(
                 authorsResourceParameters);
@@ -81,7 +81,7 @@ namespace AgroPalace31.Controllers
         }
 
         //using actionresult
-        /* [HttpGet("authorId ")]
+         [HttpGet("{authorId}", Name ="GetAuthor")]
         public IActionResult GetAuthor(Guid authorId)
         {
             var authorsFromRepo = _courseLibraryRepository.GetAuthor(authorId);
@@ -89,11 +89,11 @@ namespace AgroPalace31.Controllers
             {
                 return NotFound();
             }
-            return Ok(authorsFromRepo);
-        } */
+            return Ok(_mapper.Map<AuthorDto>(authorsFromRepo));
+        } 
 
         //using mapping 
-        public ActionResult<IEnumerable<AuthorDto>> GetAuthor(Guid authorId)
+       /* public ActionResult<IEnumerable<AuthorDto>> GetAuthor(Guid authorId)
         {
             var authorFromRepo = _courseLibraryRepository.GetAuthor(authorId);
             if (authorFromRepo == null)
@@ -101,7 +101,30 @@ namespace AgroPalace31.Controllers
                 return NotFound();
             }
             return Ok(_mapper.Map<IEnumerable<AuthorDto>>(authorFromRepo));
+        } */
+
+        //creating a resource
+        [HttpPost]
+        public ActionResult<AuthorDto> CreateAuthor(AuthorForCreationDto author)
+        {
+            var authorEntity = _mapper.Map<CourseLibrary.API.Entities.Author>(author);
+            _courseLibraryRepository.AddAuthor(authorEntity);
+            _courseLibraryRepository.Save();
+
+            var authorToReturn = _mapper.Map<AuthorDto>(authorEntity);
+            return CreatedAtRoute("GetAuthor", 
+                new { authorId = authorToReturn.Id },
+                authorToReturn);
         }
+
+        //supporting OPTIONS
+        [HttpOptions]
+        public IActionResult GetAuthorOptions()
+        {
+            Response.Headers.Add("Allow","GET,OPTIONS,POST " );
+            return Ok();
+        }
+
     }
 }
  
