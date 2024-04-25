@@ -7,16 +7,24 @@ using System.Threading.Tasks;
 
 namespace AgroPalace31.Model
 {
+    //validating input when updating a rseource with put
+    public class CourseForCreationDto : CourseForManipulationDto
+    {
+    }
+    /*
     //class level input validation with a custom attribute
-    [CourseTitleMustBeDifferentFromDescriptionAttributes(ErrorMessage ="title must be different from description")]
+    [CourseTitleMustBeDifferentFromDescriptionAttributes(
+        ErrorMessage ="title must be different from description")]
 
     //customizing error message
     public class CourseForCreationDto : IValidatableObject
     {
+        
         [Required(ErrorMessage = "You should fill out a title.")]
         [MaxLength(100, ErrorMessage = "The title shouldn`t have more than 100 characters.")]
         public string Title { get; set; }
 
+        [Required(ErrorMessage = "You should fill out a description")]
         [MaxLength(1500, ErrorMessage = "the description shouldn`t have more than 1500 characters.")]
         public string Description { get; set; }
 
@@ -24,7 +32,9 @@ namespace AgroPalace31.Model
         {
             throw new NotImplementedException();
         }
+        
     }
+    */
 
     //class level input validation with IValidatableObject
 

@@ -7,13 +7,20 @@ using System.Threading.Tasks;
 
 namespace AgroPalace31.ValidationAttributes
 {
+
+
+
     //class level input validation with a custom attribute
     public class CourseTitleMustBeDifferentFromDescriptionAttributes : ValidationAttribute
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            var course = (CourseForCreationDto)validationContext.ObjectInstance;
 
+
+            // var course = (CourseForCreationDto)validationContext.ObjectInstance;
+
+            // //validating input when updating a resource with put
+            var course = (CourseForManipulationDto)validationContext.ObjectInstance;
 
             if(course.Title == course.Description)
             {
@@ -25,10 +32,12 @@ namespace AgroPalace31.ValidationAttributes
                     );
                 */
                 return new ValidationResult(ErrorMessage,
-                    new[] { nameof(CourseForCreationDto) }
-                    );
+                   // new[] { nameof(CourseForCreationDto) });
+
+                    //validating input when updating a resource with put
+                 new[] { nameof(CourseForManipulationDto) });
             }
-            return ValidationResult.Success;
+            return ValidationResult.Success;   
         }
     }
 }

@@ -85,5 +85,33 @@ namespace AgroPalace31.Controllers
             return CreatedAtRoute("GetCourseForAuthor",
                 new { authorId = authorId, courseId = courseToReturn.Id }, courseToReturn);
         }
+
+        //updating a resource using put
+        // api/author/authorId/course/courseId
+        // ... PAYLOAD(i.e  request body: contains the new values for the resources field)
+        [HttpPut("{courseId}")]
+        public ActionResult UpdateCourseForAuthor(Guid authorId, Guid courseId,
+            CourseForUpdateDto course)
+        {
+            if (!_courseLibraryRepository.AuthorExists(authorId))
+            {
+                return NotFound();
+            }
+            var courseForAuthorFromRepo = _courseLibraryRepository.GetCourse
+                (authorId, courseId);
+            
+            if(courseForAuthorFromRepo == null)
+            {
+                return NotFound();
+            }
+            //map the entity to a CourseForUpdateDto
+            //apply the updated field values to that dto
+            //map the CourseForUpdate back to an entity
+            _mapper.Map(course, courseForAuthorFromRepo);
+
+            _courseLibraryRepository.UpdateCourse(courseForAuthorFromRepo);
+            _courseLibraryRepository.Save();
+            return NoContent();
+        }
     }
 }
