@@ -1,6 +1,8 @@
 ﻿using AgroPalace31.Model;
 using AutoMapper;
+using CourseLibrary.API.Entities;
 using CourseLibrary.API.Services;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -90,7 +92,7 @@ namespace AgroPalace31.Controllers
         // api/author/authorId/course/courseId
         // ... PAYLOAD(i.e  request body: contains the new values for the resources field)
         [HttpPut("{courseId}")]
-        public ActionResult UpdateCourseForAuthor(Guid authorId, Guid courseId,
+        public IActionResult UpdateCourseForAuthor(Guid authorId, Guid courseId,
             CourseForUpdateDto course)
         {
             if (!_courseLibraryRepository.AuthorExists(authorId))
@@ -102,7 +104,22 @@ namespace AgroPalace31.Controllers
             
             if(courseForAuthorFromRepo == null)
             {
-                return NotFound();
+                //return NotFound();
+
+                //upserting with put
+                var courseToAdd = _mapper.Map<CourseLibrary.API.Entities.Course>(course);
+                courseToAdd.Id = courseId;
+
+                //using this method in both POST & PUT
+                _courseLibraryRepository.AddCourse(authorId, courseToAdd);
+
+                _courseLibraryRepository.Save();
+
+                var courseToReturn = _mapper.Map<CourseDto>(courseToAdd);
+
+                return CreatedAtRoute("GetCourseForAuthor",
+                    new {authorId, courseId = courseToReturn.Id },
+                    courseToReturn);
             }
             //map the entity to a CourseForUpdateDto
             //apply the updated field values to that dto
@@ -111,6 +128,37 @@ namespace AgroPalace31.Controllers
 
             _courseLibraryRepository.UpdateCourse(courseForAuthorFromRepo);
             _courseLibraryRepository.Save();
+            return NoContent();
+        }
+
+        //partially UPDATING a resource 
+        [HttpPatch("{courseId}")]
+        public ActionResult PartiallyUpdateCourseForAuthor(Guid authorId,
+            Guid courseId,
+            JsonPatchDocument<CourseForUpdateDto> patchDocument)
+        {
+            //courseForUpdateDto
+            if (!_courseLibraryRepository.AuthorExists(authorId))
+            {
+                return NotFound();
+            }
+
+            var courseForAuthorFromRepo = _courseLibraryRepository.GetCourse(
+                authorId, courseId);
+
+            if(courseForAuthorFromRepo == null)
+            {
+                return NotFound();
+            }
+            var courseToPatch = _mapper.Map<CourseForUpdateDto>(courseForAuthorFromRepo);
+            //add Validation
+            patchDocument.ApplyTo(courseToPatch);
+
+            _mapper.Map(courseToPatch, courseForAuthorFromRepo);
+
+            _courseLibraryRepository.UpdateCourse(courseForAuthorFromRepo);
+            _courseLibraryRepository.Save();
+
             return NoContent();
         }
     }

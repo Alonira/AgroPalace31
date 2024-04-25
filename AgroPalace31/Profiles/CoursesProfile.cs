@@ -16,6 +16,8 @@ namespace AgroPalace31.Profiles
             CreateMap<Model.CourseForCreationDto, CourseLibrary.API.Entities.Course>();
             //updating a resource
             CreateMap<Model.CourseForUpdateDto, CourseLibrary.API.Entities.Course>();
+            //patch
+            CreateMap<CourseLibrary.API.Entities.Course, Model.CourseForUpdateDto>();
         }
     }
 }
